@@ -44,7 +44,7 @@ NOTIFY_PANIC_KEY_ALARM = '625'
 NOTIFY_PANIC_KEY_RESTORED = '626'
 NOTIFY_AUXILARY_INPUT_ALARM = '631'
 NOTIFY_AUXILARY_INPUT_RESTORED = '632'
-NOTIFY_PARTITION_READY = '626'
+NOTIFY_PARTITION_READY = '650'
 NOTIFY_PARTITION_NOT_READY = '651'
 NOTIFY_PARTITION_ARMED = '652'
 NOTIFY_PARTITION_READY_TO_FORCE_ARM = '653'
@@ -95,6 +95,9 @@ class Message(object):
         self.command = command
         self.data = data
 
+    def __repr__(self):
+        return '<Message command="{}" data="{}">'.format(self.command, self.data)
+
     def serialize(self):
         """
         Serializes this message.
@@ -107,7 +110,7 @@ class Message(object):
         Computes and returns the checksum for this message.
         """
 
-        return chr(sum([ord(x) for x in itertools.chain(self.command, self.data)]) % 256)
+        return '{0:02X}'.format(sum([ord(x) for x in itertools.chain(self.command, self.data)]) % 256)
 
     @classmethod
     def deserialize(cls, raw):
@@ -116,8 +119,8 @@ class Message(object):
         """
 
         command = raw[0:3]
-        data = raw[3:-3]
-        checksum = raw[-3]
+        data = raw[3:-4]
+        checksum = raw[-4:-2]
 
         message = cls(command, data)
         if message.checksum() != checksum:

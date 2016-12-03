@@ -14,7 +14,7 @@ if __name__ == '__main__':
         long_description=open(os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
         author='Jernej Kos',
         author_email='jernej@kos.mx',
-        url='https://github.com/kostko/dsc-it100-py',
+        url='https://github.com/kostko/dsc-it100',
         license='AGPLv3',
         packages=find_packages(exclude=('*.tests', '*.tests.*', 'tests.*', 'tests')),
         package_data={},
@@ -28,7 +28,8 @@ if __name__ == '__main__':
         include_package_data=True,
         zip_safe=False,
         install_requires=[
-            'pyserial>=3.1.1'
+            'pyserial>=3.2.1',
+            'pyserial-asyncio>=0.2',
         ],
         tests_require=[
         ],
