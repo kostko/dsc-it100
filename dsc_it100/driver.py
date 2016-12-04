@@ -148,9 +148,12 @@ class Driver(object):
         if self._reader or self._writer:
             raise exceptions.DriverError('Driver is already connected')
 
-        self._reader, self._writer = self._loop.run_until_complete(
-            serial_asyncio.open_serial_connection(loop=self._loop, url=self._port, baudrate=9600)
-        )
+        ensure_future(self._connect(), loop=self._loop)
+
+    @asyncio.coroutine
+    def _connect(self):
+        self._reader, self._writer = yield from serial_asyncio.open_serial_connection(
+            loop=self._loop, url=self._port, baudrate=9600)
 
         # Spawn coroutine for handling protocol messages.
         ensure_future(self._handle_messages(), loop=self._loop)
