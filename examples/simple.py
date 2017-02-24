@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import asyncio
 
 import dsc_it100
