@@ -86,11 +86,12 @@ class Driver(object):
         protocol.NOTIFY_PANEL_AC_RESTORED: {'type': UPDATE_GENERAL, 'ac_trouble': False},
     }
 
-    def __init__(self, serial_port, loop=None):
+    def __init__(self, serial_port, loop=None, baudrate=9600):
         """
         Constructs the DSC IT-100 driver.
 
         :param serial_port: Serial port where the IT-100 is connected to
+        :param baudrate: Optional baud rate for serial port
         :param loop: Optional event loop to use
         """
 
@@ -99,6 +100,7 @@ class Driver(object):
 
         self._loop = loop
         self._port = serial_port
+        self._baudrate = baudrate
         self._reader = None
         self._writer = None
         self._code = None
@@ -152,8 +154,9 @@ class Driver(object):
 
     @asyncio.coroutine
     def _connect(self):
+        logger.info('moo')
         self._reader, self._writer = yield from serial_asyncio.open_serial_connection(
-            loop=self._loop, url=self._port, baudrate=9600)
+            loop=self._loop, url=self._port, baudrate=self._baudrate)
 
         # Spawn coroutine for handling protocol messages.
         ensure_future(self._handle_messages(), loop=self._loop)
