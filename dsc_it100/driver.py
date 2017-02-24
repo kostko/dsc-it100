@@ -154,7 +154,6 @@ class Driver(object):
 
     @asyncio.coroutine
     def _connect(self):
-        logger.info('moo')
         self._reader, self._writer = yield from serial_asyncio.open_serial_connection(
             loop=self._loop, url=self._port, baudrate=self._baudrate)
 
