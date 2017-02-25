@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import asyncio
 
 import dsc_it100
@@ -30,7 +32,7 @@ def handle_general_update(driver, general):
     ))
 
 loop = asyncio.get_event_loop()
-driver = dsc_it100.Driver('/dev/ttyUSB0', loop)
+driver = dsc_it100.Driver('/dev/ttyUSB0', loop=loop, baudrate=9600)
 driver.set_alarm_code('1234')
 driver.handler_zone_update = handle_zone_update
 driver.handler_partition_update = handle_partition_update
