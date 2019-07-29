@@ -1,17 +1,11 @@
 import asyncio
 import logging
+from asyncio import ensure_future
 
 import serial_asyncio
 
 from . import protocol, exceptions, state
 
-try:
-    from asyncio import ensure_future
-except ImportError:
-    # Python 3.4.3 and earlier has this as async
-    # pylint: disable=unused-import
-    from asyncio import async
-    ensure_future = async
 
 # Exports.
 __all__ = [
